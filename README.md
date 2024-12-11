@@ -141,4 +141,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Check existing issues before posting
 
 ---
-Made with ❤️ by [Your Name] 
+Made with ❤️ by itpixelz
