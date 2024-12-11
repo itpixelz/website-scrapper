@@ -19,7 +19,13 @@ class WebsiteScraper:
         version_match = re.search(r'/(\d+\.\d+(?:\.\d+)?(?:\.dev\d+)?(?:\.post\d+)?(?:\.alpha\d+)?(?:\.beta\d+)?)', self.base_url)
         self.version = version_match.group(1) if version_match else None
         self.domain = urlparse(base_url).netloc
-        self.output_dir = output_dir or f"{self.domain}_docs"
+        
+        # Set up output directory inside docs/
+        if output_dir:
+            self.output_dir = os.path.join('docs', output_dir)
+        else:
+            self.output_dir = os.path.join('docs', f"{self.domain}")
+        
         self.visited_urls = set()
         self.max_retries = max_retries
         
@@ -34,8 +40,8 @@ class WebsiteScraper:
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
         
-        # Setup logging
-        log_file = f"{self.domain}_scraping.log"
+        # Setup logging with new directory structure
+        log_file = os.path.join('logs', f"{self.domain}_scraping.log")
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
@@ -45,6 +51,7 @@ class WebsiteScraper:
             ]
         )
         
+        # Create output directory if it doesn't exist
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 

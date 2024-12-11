@@ -1,7 +1,10 @@
-# Scraped documentation
-*_docs/
-*_scraping.log
-scraping.log
+# Scraped documentation output
+docs/*
+!docs/.gitkeep
+
+# Logs
+logs/*
+!logs/.gitkeep
 
 # Python
 __pycache__/
@@ -44,7 +47,6 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
-*.log
 
 # Test output
 test_output/ 

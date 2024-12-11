@@ -50,13 +50,27 @@ With custom retry count:
 python website-scraper.py https://example.com/docs --max-retries 5
 ```
 
-## Output
+## Output Structure
 
-The scraper creates:
-- A directory named after the domain (e.g., `example.com_docs`)
-- Markdown files for each documentation page
-- Log file with scraping details (`domain_scraping.log`)
-- Maintains the original site structure
+The scraper organizes content in dedicated directories:
+
+```
+website-scraper/
+├── docs/                 # All scraped documentation
+│   ├── example.com/     # Domain-specific documentation
+│   └── other-site.com/  # Another site's documentation
+│
+└── logs/                # All log files
+    ├── example.com_scraping.log
+    └── other-site.com_scraping.log
+```
+
+### Output Details
+
+- Documentation files are stored in `docs/<domain>/`
+- Each documentation page is converted to Markdown
+- Original site structure is maintained within domain directory
+- Logs are stored in `logs/` with domain-specific names
 
 ## Configuration
 
@@ -67,13 +81,6 @@ The scraper automatically:
 - Retries failed requests
 - Converts HTML to clean Markdown
 
-## Development
-
-To run tests:
-```bash
-python website-scraper.py --test
-```
-
 ## Project Structure
 
 ```
@@ -82,6 +89,8 @@ website-scraper/
 ├── requirements.txt       # Python dependencies
 ├── README.md             # This file
 ├── .gitignore           # Git ignore rules
+├── docs/                # Scraped documentation output
+├── logs/                # Log files directory
 └── tests/               # Test files (future)
 ```
 
