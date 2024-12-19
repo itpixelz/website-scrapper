@@ -3,25 +3,30 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Selenium](https://img.shields.io/badge/Selenium-4.11%2B-green.svg)](https://www.selenium.dev/)
+[![Maintained by itpixelz](https://img.shields.io/badge/maintained%20by-itpixelz-blue.svg)](https://github.com/itpixelz)
 
-A powerful Python-based documentation scraper that downloads and converts documentation websites into well-structured markdown files. Perfect for offline documentation reading, content migration, or documentation archival.
+A powerful Python-based documentation scraper that downloads and converts documentation websites into well-structured markdown or HTML files. Specifically optimized for API documentation websites with dynamic JavaScript content. Perfect for offline documentation reading, content migration, or documentation archival.
+
+[Live Demo](https://github.com/itpixelz/website-scraper) | [Report Bug](https://github.com/itpixelz/website-scraper/issues) | [Request Feature](https://github.com/itpixelz/website-scraper/issues)
 
 ## ✨ Features
 
-- 📚 **Complete Documentation Scraping**: Downloads entire documentation websites
+- 📚 **Dynamic Content Support**: Handles JavaScript-rendered content using Selenium
+- 🔄 **Multiple Output Formats**: Supports both Markdown and HTML output
 - 🌳 **Structure Preservation**: Maintains original site hierarchy
-- ⚡ **Smart Version Handling**: Detects and respects documentation versions
-- 🔄 **Format Conversion**: Converts HTML to clean Markdown
-- 🛡️ **Robust Error Handling**: Rate limiting and retry logic
-- 📝 **Comprehensive Logging**: Detailed logs for debugging
-- 🧪 **Test Coverage**: Includes unit tests
-- 🎯 **Framework Support**: Works with Sphinx, Docusaurus, and more
+- 🎯 **API Documentation Focus**: Specialized in scraping API reference pages
+- 🔍 **Smart Navigation**: Automatically detects and follows API section links
+- 🛡️ **Robust Error Handling**: Includes retry logic and graceful failures
+- ⏱️ **Rate Limiting**: Respectful scraping with built-in delays
+- 📝 **Detailed Logging**: Comprehensive progress tracking
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.8 or higher
+- Chrome/Chromium browser installed
 - pip (Python package installer)
 
 ### Installation
@@ -46,64 +51,66 @@ pip install -r requirements.txt
 ### Basic Usage
 
 ```bash
-# Basic scraping
-python website-scraper.py https://example.com/docs
+# Basic scraping (outputs in Markdown format by default)
+python website-scraper.py https://example.com/api-reference --output-dir docs
 
-# Custom output directory
-python website-scraper.py https://example.com/docs --output-dir custom_docs
-
-# Adjust retry attempts
-python website-scraper.py https://example.com/docs --max-retries 5
+# Scrape with HTML output
+python website-scraper.py https://example.com/api-reference --output-dir docs --format html
 ```
 
 ## 📁 Project Structure
 
 ```
 website-scraper/
-├── 📂 docs/                 # Scraped documentation storage
-│   ├── example.com/        # Domain-specific content
-│   └── other-site.com/     # Separate by domain
-│
-├── 📂 logs/                # Log files directory
-│   ├── example.com_scraping.log
-│   └── other-site.com_scraping.log
-│
-├── 📄 website-scraper.py   # Main script
-├── 📄 requirements.txt     # Dependencies
-├── 📄 README.md           # Documentation
-└── 📂 tests/              # Test files
+├── website-scraper.py   # Main script
+├── requirements.txt     # Project dependencies
+├── README.md           # Documentation
+└── docs/              # Default output directory
+    └── <website-name>/  # Scraped content organized by website
+        ├── index.md    # Main page
+        └── sections/   # Individual API sections
 ```
 
-## 🔧 Configuration
-
-The scraper includes smart defaults and can be configured through command-line arguments:
+## 🔧 Command Line Options
 
 ```bash
 Options:
-  --output-dir DIR    Custom output directory (default: docs/<domain>)
-  --max-retries N     Maximum retry attempts for failed requests (default: 3)
+  url                   URL of the API documentation to scrape
+  --output-dir DIR      Output directory for scraped content (default: docs)
+  --format FORMAT       Output format: 'md' or 'html' (default: md)
 ```
 
-### Automatic Features:
-- 🔍 Version detection in URLs
-- 🚫 Asset filtering (images, CSS, JS)
-- ⏱️ Rate limiting
-- 🔄 Retry logic for failed requests
-- 🧹 Clean Markdown conversion
+## 🎯 Features in Detail
 
-## 📝 Output Format
+### Automatic Content Processing
+- Handles dynamically loaded JavaScript content
+- Converts HTML to clean, readable Markdown
+- Preserves API endpoint structure
+- Maintains internal link references
 
-### Documentation Files
-- Stored in `docs/<domain>/`
-- Maintains original site structure
-- Converts to clean Markdown format
-- Preserves metadata and links
+### Smart Navigation
+- Automatically detects API sections
+- Handles nested documentation structures
+- Follows proper rate limiting practices
+- Respects robots.txt guidelines
 
-### Logs
-- Stored in `logs/<domain>_scraping.log`
-- Includes timestamps and error details
-- Tracks scraping progress
-- Helps with debugging
+### Output Formats
+- **Markdown (Default)**
+  - Clean, readable documentation
+  - Preserved formatting and structure
+  - GitHub-compatible markdown
+
+- **HTML**
+  - Complete HTML content preservation
+  - Original styling information
+  - Interactive elements preserved
+
+## 🔍 Supported Websites
+
+The scraper is specifically tested with:
+- RingCentral API Documentation
+- Other API reference sites using similar structures
+- JavaScript-based documentation platforms
 
 ## 🤝 Contributing
 
@@ -116,7 +123,7 @@ git checkout -b feature/amazing-feature
 ```
 3. Commit your changes:
 ```bash
-git commit -m 'Add amazing feature'
+git commit -m 'feat: add amazing feature'
 ```
 4. Push to the branch:
 ```bash
@@ -124,21 +131,56 @@ git push origin feature/amazing-feature
 ```
 5. Open a Pull Request
 
+### Contribution Guidelines
+- Follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
+- Maintain existing code style
+- Add tests for new features
+- Update documentation as needed
+
+## 📝 Dependencies
+
+- beautifulsoup4 >= 4.12.0: HTML parsing
+- selenium >= 4.11.0: Dynamic content handling
+- html2text >= 2020.1.16: HTML to Markdown conversion
+- webdriver-manager >= 4.0.0: Chrome WebDriver management
+- requests >= 2.31.0: HTTP requests
+- urllib3 >= 2.0.0: HTTP client
+- typing-extensions >= 4.7.0: Type hinting support
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🔒 Security
+
+- Respects robots.txt
+- Implements rate limiting
+- No credential storage
+- Safe file handling
+
+## 🐛 Known Issues
+
+- May require adjustments for heavily JavaScript-dependent sites
+- Some complex interactive elements might not convert perfectly to Markdown
+- Rate limiting might need adjustment for different sites
+
+## 📮 Support
+
+Need help? Got questions?
+
+- [Create an issue](https://github.com/itpixelz/website-scraper/issues/new/choose) for bug reports
+- [Start a discussion](https://github.com/itpixelz/website-scraper/discussions/new) for feature requests
+- Check [existing issues](https://github.com/itpixelz/website-scraper/issues) before posting
+
 ## 🙏 Acknowledgments
 
-- Beautiful Soup for HTML parsing
-- Requests for HTTP handling
-- All our contributors and users
-
-## 📧 Support
-
-- Create an issue for bug reports
-- Start a discussion for feature requests
-- Check existing issues before posting
+- Selenium team for browser automation
+- Beautiful Soup team for HTML parsing
+- html2text team for Markdown conversion
+- All contributors and users
 
 ---
-Made with ❤️ by itpixelz
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/itpixelz">itpixelz</a><br>
+  © 2024 itpixelz. All rights reserved.
+</p>
